@@ -1,0 +1,33 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Job Applications</h1>
+
+<table class="w-full bg-white shadow rounded">
+  <thead>
+    <tr class="bg-gray-200 text-left">
+      <th class="p-2">Company</th>
+      <th class="p-2">Role</th>
+      <th class="p-2">Status</th>
+      <th class="p-2">Applied</th>
+      <th class="p-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for job in jobs %}
+    <tr class="border-t">
+      <td class="p-2">{{ job.company }}</td>
+      <td class="p-2">{{ job.role }}</td>
+      <td class="p-2">{{ job.status }}</td>
+      <td class="p-2">{{ job.date_applied }}</td>
+      <td class="p-2">
+        <a href="{% url 'job_edit' job.pk %}" class="text-blue-600">Edit</a> |
+        <a href="{% url 'job_delete' job.pk %}" class="text-red-600">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="p-2 text-center">No jobs yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

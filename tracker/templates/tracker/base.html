@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="container mx-auto flex justify-between">
+      <a href="{% url 'dashboard' %}" class="font-bold">Job Tracker</a>
+      <div>
+        <a href="{% url 'dashboard' %}" class="px-2">Dashboard</a>
+        <a href="{% url 'job_list' %}" class="px-2">Jobs</a>
+        <a href="{% url 'job_create' %}" class="px-2">Add Job</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto p-6">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
