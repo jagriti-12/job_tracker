@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import JobApplication
 from django.utils import timezone
 from django import forms
+from .forms import JobApplicationForm
 
 # Simple form for jobs
 class JobApplicationForm(forms.ModelForm):
@@ -62,3 +63,18 @@ def job_delete(request, pk):
         job.delete()
         return redirect('job_list')
     return render(request, 'tracker/job_confirm_delete.html', {'job': job})
+
+# tracker/views.py
+def home(request):
+    applications = JobApplication.objects.all().order_by('-application_date')
+    return render(request, 'tracker/home.html', {'applications': applications})
+
+def add_application(request):
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = JobApplicationForm()
+    return render(request, 'tracker/add_application.html', {'form': form})
