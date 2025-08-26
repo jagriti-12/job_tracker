@@ -1,11 +1,75 @@
 {% extends 'tracker/base.html' %}
 {% load widget_tweaks %}
 {% block content %}
-<div class="max-w-6xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6">
+
+<style>
+/* Container */
+.dark .max-w-6xl {
+  background-color: #111827; /* gray-900 */
+  color: #f9fafb; /* gray-100 */
+}
+
+/* Heading */
+.dark .max-w-6xl h2 {
+  color: #f9fafb;
+}
+
+/* Table */
+.dark table {
+  color: #f9fafb;
+}
+
+.dark thead tr {
+  background-color: #1f2937; /* gray-800 */
+  color: #e5e7eb; /* gray-200 */
+}
+
+.dark tbody tr:hover {
+  background-color: #374151; /* gray-700 */
+}
+
+.dark td {
+  border-color: #374151;
+}
+
+/* Status Badges */
+.dark .bg-blue-100 {
+  background-color: #1e3a8a !important; /* darker blue */
+  color: #93c5fd !important;
+}
+
+.dark .bg-yellow-100 {
+  background-color: #78350f !important;
+  color: #facc15 !important;
+}
+
+.dark .bg-red-100 {
+  background-color: #7f1d1d !important;
+  color: #fca5a5 !important;
+}
+
+.dark .bg-green-100 {
+  background-color: #064e3b !important;
+  color: #6ee7b7 !important;
+}
+
+/* Links */
+.dark a.text-blue-600 {
+  color: #60a5fa; /* light blue */
+}
+.dark a.text-red-600 {
+  color: #f87171; /* light red */
+}
+.dark a:hover {
+  text-decoration: underline;
+}
+</style>
+
+<div class="max-w-6xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6 border border-gray-600">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">📋 Job Applications</h2>
         <a href="{% url 'job_create' %}"
-           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg">
+           class="bg-gray-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg">
             ➕ Add Job
         </a>
     </div>
