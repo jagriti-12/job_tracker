@@ -1,48 +1,89 @@
 {% extends 'tracker/base.html' %}
 {% load widget_tweaks %}
 {% block content %}
-<div class="max-w-6xl mx-auto mt-8 space-y-8">
+<div class="max-w-7xl mx-auto mt-8 space-y-10">
 
   <!-- Heading -->
   <h1 class="text-3xl font-bold mb-6 text-gray-800">📊 Dashboard</h1>
 
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-    <div class="bg-white p-6 shadow rounded-xl text-center">
-      <p class="text-gray-500">Total</p>
-      <p class="text-3xl font-bold text-gray-800">{{ total }}</p>
+    <div class="bg-gradient-to-r from-yellow-100 to-yellow-200 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-600">Total</p>
+      <p class="text-3xl font-bold text-gray-900">{{ total }}</p>
     </div>
-    <div class="bg-yellow-100 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">Applied</p>
+    <div class="bg-gradient-to-r from-yellow-200 to-yellow-300 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">📨 Applied</p>
       <p class="text-3xl font-bold">{{ applied }}</p>
     </div>
-    <div class="bg-blue-100 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">Interview</p>
+    <div class="bg-gradient-to-r from-blue-200 to-blue-300 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">🎤 Interview</p>
       <p class="text-3xl font-bold">{{ interview }}</p>
     </div>
-    <div class="bg-green-100 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">Selected</p>
+    <div class="bg-gradient-to-r from-green-200 to-green-300 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">✅ Selected</p>
       <p class="text-3xl font-bold">{{ selected }}</p>
     </div>
-    <div class="bg-red-100 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">Rejected</p>
+    <div class="bg-gradient-to-r from-red-200 to-red-300 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">❌ Rejected</p>
       <p class="text-3xl font-bold">{{ rejected }}</p>
     </div>
   </div>
 
-  <!-- Charts -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Doughnut -->
-    <div class="bg-white p-6 rounded-xl shadow">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Application Status Overview</h2>
-      <canvas id="statusChart" class="w-full h-48"></canvas>
+    <div class="bg-white p-6 rounded-xl shadow flex justify-center">
+      <div class="w-64 h-64"> <!-- 👈 size controlled -->
+        <h2 class="text-xl font-bold mb-4 text-gray-800 text-center">Application Status Distribution</h2>
+        <canvas id="statusChart" class="w-full h-full"></canvas>
+      </div>
     </div>
 
-    <!-- Bar Chart -->
+    <!-- Bar -->
     <div class="bg-white p-6 rounded-xl shadow">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Application Trends</h2>
+      <h2 class="text-xl font-bold mb-4 text-gray-800">Applications by Month</h2>
       <canvas id="barChart" class="w-full h-48"></canvas>
+    </div>
+  </div>
+
+  <!-- Recent Applications Table -->
+  <div class="bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">📝 Recent Applications</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 text-left text-gray-600">
+            <th class="p-3">Company</th>
+            <th class="p-3">Role</th>
+            <th class="p-3">Status</th>
+            <th class="p-3">Date Applied</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for job in recent_jobs %}
+          <tr class="border-b hover:bg-gray-50">
+            <td class="p-3">{{ job.company }}</td>
+            <td class="p-3">{{ job.role }}</td>
+            <td class="p-3">
+              <span class="px-3 py-1 rounded-full text-sm 
+                {% if job.status == 'Applied' %} bg-yellow-100 text-yellow-700 
+                {% elif job.status == 'Interview' %} bg-blue-100 text-blue-700
+                {% elif job.status == 'Selected' %} bg-green-100 text-green-700
+                {% elif job.status == 'Rejected' %} bg-red-100 text-red-700
+                {% endif %}">
+                {{ job.status }}
+              </span>
+            </td>
+            <td class="p-3">{{ job.date_applied|date:"d-m-y" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="p-3 text-center text-gray-500">No recent applications found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -59,11 +100,11 @@
       datasets: [{
         data: [{{ applied }}, {{ interview }}, {{ rejected }}, {{ selected }}],
         backgroundColor: ['#facc15', '#3b82f6', '#ef4444', '#22c55e'],
-        borderWidth: 2
       }]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: { legend: { position: 'bottom' } }
     }
   });
@@ -73,20 +114,19 @@
   new Chart(ctx2, {
     type: 'bar',
     data: {
-      labels: ['Applied', 'Interview', 'Rejected', 'Selected'],
+      labels: {{ months|safe }},
       datasets: [{
-        label: 'Job Applications',
-        data: [{{ applied }}, {{ interview }}, {{ rejected }}, {{ selected }}],
-        backgroundColor: ['#facc15', '#3b82f6', '#ef4444', '#22c55e']
+        label: 'Applications',
+        data: {{ monthly_counts|safe }},
+        backgroundColor: '#3b82f6'
       }]
     },
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true }
-      }
+      scales: { y: { beginAtZero: true } }
     }
   });
 </script>
+
 {% endblock %}

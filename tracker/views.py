@@ -3,6 +3,9 @@ from .models import JobApplication
 from django.utils import timezone
 from django import forms
 from .forms import JobApplicationForm
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+import calendar
 
 # Simple form for jobs
 class JobApplicationForm(forms.ModelForm):
@@ -19,18 +22,34 @@ def dashboard(request):
     rejected = jobs.filter(status="rejected").count()
     selected = jobs.filter(status="selected").count()
 
+    # Monthly applications count
+    monthly_data = (
+        jobs.annotate(month=TruncMonth("date_applied"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("month")
+    )
+    months = [calendar.month_abbr[d["month"].month] for d in monthly_data if d["month"]]
+    monthly_counts = [d["count"] for d in monthly_data]
+
+    # Recent jobs (last 5)
+    recent_jobs = jobs.order_by("-date_applied")[:5]
+
     context = {
-        'total': total,
-        'applied': applied,
-        'interview': interview,
-        'rejected': rejected,
-        'selected': selected,
+        "total": total,
+        "applied": applied,
+        "interview": interview,
+        "rejected": rejected,
+        "selected": selected,
+        "months": months,
+        "monthly_counts": monthly_counts,
+        "recent_jobs": recent_jobs,
     }
-    return render(request, 'tracker/dashboard.html', context)
+    return render(request, "tracker/dashboard.html", context)
 
 # List all jobs
 def job_list(request):
-    jobs = JobApplication.objects.all().order_by('-date_applied') #Newest First
+    jobs = JobApplication.objects.all().order_by('-date_applied')  # Newest First
     return render(request, 'tracker/job_list.html', {'jobs': jobs})
 
 # Add new job
@@ -45,7 +64,6 @@ def job_create(request):
     else:
         form = JobApplicationForm()
     return render(request, 'tracker/job_form.html', {'form': form})
-
 
 # Edit job
 def job_edit(request, pk):
@@ -69,7 +87,7 @@ def job_delete(request, pk):
 
 # tracker/views.py
 def home(request):
-    applications = JobApplication.objects.all().order_by('-application_date')
+    applications = JobApplication.objects.all().order_by('-date_applied')
     return render(request, 'tracker/home.html', {'applications': applications})
 
 def add_application(request):
