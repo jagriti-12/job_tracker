@@ -1,0 +1,1 @@
+web: waitress-serve --port=$PORT job_tracker.wsgi:application
