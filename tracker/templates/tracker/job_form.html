@@ -3,11 +3,114 @@
 
 {% block content %}
 
+<style>
+/* ----------------------------
+   Base Container
+---------------------------- */
+.form-container {
+  background-color: #ffffff;
+  color: #1f2937; /* gray-800 */
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.dark .form-container {
+  background-color: #111827; /* gray-900 */
+  color: #f9fafb; /* gray-100 */
+}
+
+/* ----------------------------
+   Heading
+---------------------------- */
+.form-container h2 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.dark .form-container h2 {
+  color: #f9fafb;
+}
+
+/* ----------------------------
+   Labels
+---------------------------- */
+.form-container label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: #374151; /* gray-700 */
+}
+
+.dark .form-container label {
+  color: #e5e7eb; /* gray-200 */
+}
+
+/* ----------------------------
+   Inputs
+---------------------------- */
+.form-container input,
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  color: #111827; /* gray-900 */
+  transition: all 0.2s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  outline: none;
+  border-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
+}
+
+.dark .form-container input,
+.dark .form-container select,
+.dark .form-container textarea {
+  background-color: #1f2937; /* gray-800 */
+  border-color: #374151;
+  color: #f9fafb; /* gray-100 */
+}
+
+.dark .form-container input:focus,
+.dark .form-container select:focus,
+.dark .form-container textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.5);
+}
+
+/* ----------------------------
+   Button
+---------------------------- */
+.form-container button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to right, #3b82f6, #4f46e5); /* blue-500 → indigo-600 */
+  color: white;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-container button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+</style>
+
 <!-- Floating company names background -->
-<div class="relative max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-10">
+<div class="form-container relative max-w-4xl mx-auto">
   <!-- Foreground form -->
   <div class="relative z-10">
-    <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center"> Add Job Application</h2>
+    <h2>Add Job Application</h2>
 
     <form method="post" class="space-y-6">
       {% csrf_token %}
@@ -16,11 +119,11 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           {{ form.company.label_tag }}
-          {{ form.company|attr:"placeholder:Enter company name"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.company|attr:"placeholder:Enter company name"|add_class:"" }}
         </div>
         <div>
           {{ form.role.label_tag }}
-          {{ form.role|attr:"placeholder:Role/Position"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.role|attr:"placeholder:Role/Position"|add_class:"" }}
         </div>
       </div>
 
@@ -28,11 +131,11 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           {{ form.location.label_tag }}
-          {{ form.location|attr:"placeholder:City / Remote"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.location|attr:"placeholder:City / Remote"|add_class:"" }}
         </div>
         <div>
           {{ form.job_type.label_tag }}
-          {{ form.job_type|attr:"placeholder:Full-Time/Internship"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.job_type|attr:"placeholder:Full-Time/Internship"|add_class:"" }}
         </div>
       </div>
 
@@ -40,11 +143,11 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           {{ form.date_applied.label_tag }}
-          {{ form.date_applied|attr:"placeholder:MM/DD/YYYY"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.date_applied|attr:"placeholder:MM/DD/YYYY"|add_class:"" }}
         </div>
         <div>
           {{ form.deadline.label_tag }}
-          {{ form.deadline|attr:"placeholder:MM/DD/YYYY"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.deadline|attr:"placeholder:MM/DD/YYYY"|add_class:"" }}
         </div>
       </div>
 
@@ -52,26 +155,23 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           {{ form.status.label_tag }}
-          {{ form.status|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.status|add_class:"" }}
         </div>
         <div>
           {{ form.salary_range.label_tag }}
-          {{ form.salary_range|attr:"placeholder:e.g. 8-12 LPA"|add_class:"w-full p-3 border rounded-lg" }}
+          {{ form.salary_range|attr:"placeholder:e.g. 8-12 LPA"|add_class:"" }}
         </div>
       </div>
 
       <!-- Row 5 -->
       <div>
         {{ form.job_link.label_tag }}
-        {{ form.job_link|attr:"placeholder:Paste job URL"|add_class:"w-full p-3 border rounded-lg" }}
+        {{ form.job_link|attr:"placeholder:Paste job URL"|add_class:"" }}
       </div>
 
       <!-- Submit -->
       <div>
-        <button type="submit" 
-                class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 px-4 rounded-xl hover:scale-105 transition transform shadow-lg">
-          💾 Save Application
-        </button>
+        <button type="submit">💾 Save Application</button>
       </div>
     </form>
   </div>
