@@ -1,11 +1,74 @@
-{% extends 'tracker/base.html' %}
+{% extends "tracker/base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Add / Edit Job</h1>
+<div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+  <h2 class="text-2xl font-semibold mb-6">Add Job Application</h2>
 
-<form method="post" class="bg-white p-6 shadow rounded">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-</form>
+  <form method="post" class="space-y-6">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <!-- Row 1 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        {{ form.company.label_tag }}
+        {{ form.company }}
+      </div>
+      <div>
+        {{ form.role.label_tag }}
+        {{ form.role }}
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        {{ form.location.label_tag }}
+        {{ form.location }}
+      </div>
+      <div>
+        {{ form.job_type.label_tag }}
+        {{ form.job_type }}
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        {{ form.date_applied.label_tag }}
+        {{ form.date_applied }}
+      </div>
+      <div>
+        {{ form.deadline.label_tag }}
+        {{ form.deadline }}
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        {{ form.status.label_tag }}
+        {{ form.status }}
+      </div>
+      <div>
+        {{ form.salary_range.label_tag }}
+        {{ form.salary_range }}
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div>
+      {{ form.job_link.label_tag }}
+      {{ form.job_link }}
+    </div>
+
+    <!-- Submit -->
+    <div>
+      <button type="submit" 
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
 {% endblock %}

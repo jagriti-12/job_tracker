@@ -1,17 +1,36 @@
-# tracker/forms.py
 from django import forms
 from .models import JobApplication
 
 class JobApplicationForm(forms.ModelForm):
     class Meta:
         model = JobApplication
-        fields = ['company_name', 'role', 'application_date', 'status']
+        fields = '__all__'
         widgets = {
-            'application_date': forms.DateInput(attrs={'type': 'date'}),
-            'status': forms.Select(choices=[
-                ('Applied', 'Applied'),
-                ('Interview', 'Interview'),
-                ('Offer', 'Offer'),
-                ('Rejected', 'Rejected'),
-            ])
+            'date_applied': forms.DateInput(
+                attrs={'type': 'date', 'class': 'border rounded p-2 w-full'}
+            ),
+            'deadline': forms.DateInput(
+                attrs={'type': 'date', 'class': 'border rounded p-2 w-full'}
+            ),
+            'status': forms.Select(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
+            'company': forms.TextInput(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
+            'role': forms.TextInput(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
+            'location': forms.TextInput(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
+            'job_type': forms.TextInput(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
+            'job_link': forms.URLInput(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
+            'salary_range': forms.TextInput(
+                attrs={'class': 'border rounded p-2 w-full'}
+            ),
         }

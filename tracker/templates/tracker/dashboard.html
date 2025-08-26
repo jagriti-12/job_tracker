@@ -1,44 +1,62 @@
 {% extends 'tracker/base.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+<div class="max-w-6xl mx-auto mt-8 space-y-8">
 
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-  <div class="bg-white p-4 shadow rounded text-center">
-    <p class="text-gray-500">Total</p>
-    <p class="text-2xl font-bold">{{ total }}</p>
+  <!-- Heading -->
+  <h1 class="text-3xl font-bold mb-6 text-gray-800">📊 Dashboard</h1>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div class="bg-white p-6 shadow rounded-xl text-center">
+      <p class="text-gray-500">Total</p>
+      <p class="text-3xl font-bold text-gray-800">{{ total }}</p>
+    </div>
+    <div class="bg-yellow-100 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">Applied</p>
+      <p class="text-3xl font-bold">{{ applied }}</p>
+    </div>
+    <div class="bg-blue-100 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">Interview</p>
+      <p class="text-3xl font-bold">{{ interview }}</p>
+    </div>
+    <div class="bg-green-100 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">Selected</p>
+      <p class="text-3xl font-bold">{{ selected }}</p>
+    </div>
+    <div class="bg-red-100 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700">Rejected</p>
+      <p class="text-3xl font-bold">{{ rejected }}</p>
+    </div>
   </div>
-  <div class="bg-yellow-100 p-4 shadow rounded text-center">
-    <p class="text-gray-700">Applied</p>
-    <p class="text-2xl font-bold">{{ applied }}</p>
-  </div>
-  <div class="bg-blue-100 p-4 shadow rounded text-center">
-    <p class="text-gray-700">Interview</p>
-    <p class="text-2xl font-bold">{{ interview }}</p>
-  </div>
-  <div class="bg-green-100 p-4 shadow rounded text-center">
-    <p class="text-gray-700">Selected</p>
-    <p class="text-2xl font-bold">{{ selected }}</p>
-  </div>
-  <div class="bg-red-100 p-4 shadow rounded text-center">
-    <p class="text-gray-700">Rejected</p>
-    <p class="text-2xl font-bold">{{ rejected }}</p>
+
+  <!-- Chart -->
+  <div class="bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Application Status Overview</h2>
+    <canvas id="statusChart" class="w-full h-64"></canvas>
   </div>
 </div>
 
-<canvas id="statusChart"></canvas>
-
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById('statusChart');
   new Chart(ctx, {
-    type: 'pie',
+    type: 'doughnut', // 🔄 switched to doughnut for clarity
     data: {
       labels: ['Applied', 'Interview', 'Rejected', 'Selected'],
       datasets: [{
         data: [{{ applied }}, {{ interview }}, {{ rejected }}, {{ selected }}],
         backgroundColor: ['#facc15', '#3b82f6', '#ef4444', '#22c55e'],
+        borderColor: ['#eab308', '#2563eb', '#dc2626', '#16a34a'],
+        borderWidth: 2
       }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
     }
   });
 </script>

@@ -30,7 +30,7 @@ def dashboard(request):
 
 # List all jobs
 def job_list(request):
-    jobs = JobApplication.objects.all().order_by('-date_applied')
+    jobs = JobApplication.objects.all().order_by('-date_applied') #Newest First
     return render(request, 'tracker/job_list.html', {'jobs': jobs})
 
 # Add new job
