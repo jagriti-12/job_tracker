@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-3h&mzc@zet#y0$55af9mr-1s^igr*#!1!%pjo_0eg%gs4!r@%9
 DEBUG = False #Production
 
 ALLOWED_HOSTS = [
-    'your-domain.com',       # if you have a custom domain
-    'job-application-tracker-13kh.onrender.com',  # your Render app URL
+        # if you have a custom domain
+    'job-application-tracker.herokuapp.com',  # your Render app URL
     '127.0.0.1',             # for local testing
 ]
 
