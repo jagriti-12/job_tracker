@@ -3,57 +3,56 @@
 {% block content %}
 <div class="max-w-7xl mx-auto mt-8 space-y-10">
 
-  <!-- Heading -->
-  <h1 class="text-3xl font-bold mb-6 text-gray-800">📊 Dashboard</h1>
-
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-    <div class="bg-gradient-to-r from-yellow-100 to-yellow-200 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-600">Total</p>
-      <p class="text-3xl font-bold text-gray-900">{{ total }}</p>
+    <div class="bg-gradient-to-r from-yellow-100 to-yellow-200 dark:from-yellow-600 dark:to-yellow-700 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-600 dark:text-gray-200">Total</p>
+      <p class="text-3xl font-bold text-black dark:text-white">{{ total }}</p>
     </div>
-    <div class="bg-gradient-to-r from-yellow-200 to-yellow-300 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">📨 Applied</p>
-      <p class="text-3xl font-bold">{{ applied }}</p>
+    <div class="bg-gradient-to-r from-yellow-200 to-yellow-300 dark:from-yellow-700 dark:to-yellow-800 p-6 shadow rounded-xl text-center">
+      <p class="text-black dark:text-white">📨 Applied</p>
+      <p class="text-3xl font-bold text-black dark:text-white">{{ applied }}</p>
     </div>
-    <div class="bg-gradient-to-r from-blue-200 to-blue-300 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">🎤 Interview</p>
-      <p class="text-3xl font-bold">{{ interview }}</p>
+    <div class="bg-gradient-to-r from-blue-200 to-blue-300 dark:from-blue-700 dark:to-blue-800 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700 dark:text-gray-200">🎤 Interview</p>
+      <p class="text-3xl font-bold text-black dark:text-white">{{ interview }}</p>
     </div>
-    <div class="bg-gradient-to-r from-green-200 to-green-300 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">✅ Selected</p>
-      <p class="text-3xl font-bold">{{ selected }}</p>
+    <div class="bg-gradient-to-r from-green-200 to-green-300 dark:from-green-700 dark:to-green-800 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700 dark:text-gray-200">✅ Selected</p>
+      <p class="text-3xl font-bold text-black dark:text-white">{{ selected }}</p>
     </div>
-    <div class="bg-gradient-to-r from-red-200 to-red-300 p-6 shadow rounded-xl text-center">
-      <p class="text-gray-700">❌ Rejected</p>
-      <p class="text-3xl font-bold">{{ rejected }}</p>
+    <div class="bg-gradient-to-r from-red-200 to-red-300 dark:from-red-700 dark:to-red-800 p-6 shadow rounded-xl text-center">
+      <p class="text-gray-700 dark:text-gray-200">❌ Rejected</p>
+      <p class="text-3xl font-bold text-black dark:text-white">{{ rejected }}</p>
     </div>
   </div>
 
   <!-- Charts Row -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Doughnut -->
-    <div class="bg-white p-6 rounded-xl shadow flex justify-center">
-      <div class="w-64 h-64"> <!-- 👈 size controlled -->
-        <h2 class="text-xl font-bold mb-4 text-gray-800 text-center">Application Status Distribution</h2>
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow flex justify-center">
+      <div class="w-64 h-64">
+        <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200 text-center">
+          Application Status Distribution
+        </h2>
         <canvas id="statusChart" class="w-full h-full"></canvas>
       </div>
     </div>
 
     <!-- Bar -->
-    <div class="bg-white p-6 rounded-xl shadow">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Applications by Month</h2>
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">Applications by Month</h2>
       <canvas id="barChart" class="w-full h-48"></canvas>
     </div>
   </div>
 
   <!-- Recent Applications Table -->
-  <div class="bg-white p-6 rounded-xl shadow">
-    <h2 class="text-xl font-bold mb-4 text-gray-800">📝 Recent Applications</h2>
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">📝 Recent Applications</h2>
     <div class="overflow-x-auto">
       <table class="w-full border-collapse">
         <thead>
-          <tr class="bg-gray-100 text-left text-gray-600">
+          <tr class="bg-gray-100 dark:bg-gray-700 text-left text-black dark:text-white">
             <th class="p-3">Company</th>
             <th class="p-3">Role</th>
             <th class="p-3">Status</th>
@@ -62,24 +61,24 @@
         </thead>
         <tbody>
           {% for job in recent_jobs %}
-          <tr class="border-b hover:bg-gray-50">
-            <td class="p-3">{{ job.company }}</td>
-            <td class="p-3">{{ job.role }}</td>
+          <tr class="border-b dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+            <td class="p-3 text-gray-900 dark:text-gray-200">{{ job.company }}</td>
+            <td class="p-3 text-gray-900 dark:text-gray-200">{{ job.role }}</td>
             <td class="p-3">
               <span class="px-3 py-1 rounded-full text-sm 
-                {% if job.status == 'Applied' %} bg-yellow-100 text-yellow-700 
-                {% elif job.status == 'Interview' %} bg-blue-100 text-blue-700
-                {% elif job.status == 'Selected' %} bg-green-100 text-green-700
-                {% elif job.status == 'Rejected' %} bg-red-100 text-red-700
+                {% if job.status == 'Applied' %} bg-yellow-100 dark:bg-yellow-600 text-yellow-700 dark:text-yellow-200
+                {% elif job.status == 'Interview' %} bg-blue-100 dark:bg-blue-600 text-blue-700 dark:text-blue-200
+                {% elif job.status == 'Selected' %} bg-green-100 dark:bg-green-600 text-green-700 dark:text-green-200
+                {% elif job.status == 'Rejected' %} bg-red-100 dark:bg-red-600 text-red-700 dark:text-red-200
                 {% endif %}">
                 {{ job.status }}
               </span>
             </td>
-            <td class="p-3">{{ job.date_applied|date:"d-m-y" }}</td>
+            <td class="p-3 text-gray-900 dark:text-gray-200">{{ job.date_applied|date:"d-m-y" }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="4" class="p-3 text-center text-gray-500">No recent applications found.</td>
+            <td colspan="4" class="p-3 text-center text-gray-500 dark:text-gray-400">No recent applications found.</td>
           </tr>
           {% endfor %}
         </tbody>
