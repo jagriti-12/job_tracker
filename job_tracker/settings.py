@@ -25,13 +25,7 @@ SECRET_KEY = 'django-insecure-3h&mzc@zet#y0$55af9mr-1s^igr*#!1!%pjo_0eg%gs4!r@%9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False #Production
 
-ALLOWED_HOSTS = [
-        # if you have a custom domain
-    'job-application-tracker.herokuapp.com',  # your Render app URL
-    '127.0.0.1',             # for local testing
-]
-
-
+ALLOWED_HOSTS = ['.railway.app', '127.0.0.1']
 
 # Application definition
 
