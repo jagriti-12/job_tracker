@@ -40,9 +40,12 @@ def job_create(request):
         if form.is_valid():
             form.save()
             return redirect('job_list')
+        else:
+            print("Form Errors:", form.errors)
     else:
         form = JobApplicationForm()
     return render(request, 'tracker/job_form.html', {'form': form})
+
 
 # Edit job
 def job_edit(request, pk):
