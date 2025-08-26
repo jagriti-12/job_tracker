@@ -30,32 +30,61 @@
     </div>
   </div>
 
-  <!-- Chart -->
-  <div class="bg-white p-6 rounded-xl shadow">
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Application Status Overview</h2>
-    <canvas id="statusChart" class="w-full h-20"></canvas>
+  <!-- Charts -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Doughnut -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Application Status Overview</h2>
+      <canvas id="statusChart" class="w-full h-48"></canvas>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Application Trends</h2>
+      <canvas id="barChart" class="w-full h-48"></canvas>
+    </div>
   </div>
 </div>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctx = document.getElementById('statusChart');
-  new Chart(ctx, {
-    type: 'doughnut', // 🔄 switched to doughnut for clarity
+  // Doughnut Chart
+  const ctx1 = document.getElementById('statusChart');
+  new Chart(ctx1, {
+    type: 'doughnut',
     data: {
       labels: ['Applied', 'Interview', 'Rejected', 'Selected'],
       datasets: [{
         data: [{{ applied }}, {{ interview }}, {{ rejected }}, {{ selected }}],
         backgroundColor: ['#facc15', '#3b82f6', '#ef4444', '#22c55e'],
-        borderColor: ['#eab308', '#2563eb', '#dc2626', '#16a34a'],
         borderWidth: 2
       }]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: { position: 'bottom' }
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+
+  // Bar Chart
+  const ctx2 = document.getElementById('barChart');
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Applied', 'Interview', 'Rejected', 'Selected'],
+      datasets: [{
+        label: 'Job Applications',
+        data: [{{ applied }}, {{ interview }}, {{ rejected }}, {{ selected }}],
+        backgroundColor: ['#facc15', '#3b82f6', '#ef4444', '#22c55e']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true }
       }
     }
   });
